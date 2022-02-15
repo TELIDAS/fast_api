@@ -34,5 +34,6 @@ class UserOut(BaseModel):
     email: EmailStr
     created_date: datetime
 
+
     class Config:
         orm_mode = True
