@@ -5,21 +5,21 @@ from . import models
 from .database import engine
 from .routers import post, user, auth
 
-models.Base.metadata.create_all(bind=engine)
+# models.Base.metadata.create_all(bind=engine)
 app = FastAPI()
 
-try:
-    connection = psycopg2.connect(host='localhost',
-                                  port=5432,
-                                  database='fastapi',
-                                  user='postgres',
-                                  password='postgres',
-                                  cursor_factory=RealDictCursor)
-    cursor = connection.cursor()
-    print('Database connection successful')
-except Exception as error:
-    print("Failed Connection to db")
-    print(f'Error: {error}')
+# try:
+#     connection = psycopg2.connect(host='localhost',
+#                                   port=5432,
+#                                   database='fastapi',
+#                                   user='postgres',
+#                                   password='postgres',
+#                                   cursor_factory=RealDictCursor)
+#     cursor = connection.cursor()
+#     print('Database connection successful')
+# except Exception as error:
+#     print("Failed Connection to db")
+#     print(f'Error: {error}')
 
 
 @app.get("/")
@@ -37,6 +37,9 @@ app.include_router(user.router)
 app.include_router(auth.router)
 
 
+"""
+Clean SQL commands variation of API
+"""
 # @fast_app.get("/sql/posts")
 # async def sql_get_posts():
 #     cursor.execute("""SELECT * FROM posts""")
