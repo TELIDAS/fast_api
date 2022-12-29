@@ -4,7 +4,7 @@ services:
   web:
     build:
       context: .
-      dockerfile: web.Dockerfile
+      dockerfile: server.Dockerfile
     restart: always
     container_name: fast-api-web
     ports:
