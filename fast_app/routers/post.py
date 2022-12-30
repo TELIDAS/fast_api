@@ -1,8 +1,9 @@
 from typing import List
 from fastapi import Response, status, HTTPException, Depends, APIRouter
-from .. import models, schemas, oath2
+from .. import oath2
+from ..db import schemas, models
 from sqlalchemy.orm import Session
-from ..database import get_db
+from fast_app.db.database import get_db
 
 router = APIRouter(
     prefix="/posts",

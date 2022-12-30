@@ -1,7 +1,20 @@
 version: "3.7"
 
 services:
-  web:
+  postgres:
+    container_name: postgres
+    image: postgres:12
+    restart: always
+    ports:
+      - "5454:5432"
+    volumes:
+      - ./data-postgres:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: fastapi
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: bjbd672bjhw
+
+  server:
     build:
       context: .
       dockerfile: server.Dockerfile
@@ -11,3 +24,5 @@ services:
       - "8000:15400"
     volumes:
       - ./fast_app/:/fast_app
+    depends_on:
+      - postgres
