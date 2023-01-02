@@ -31,3 +31,6 @@ uvicorn==0.17.0
 uvloop==0.16.0
 watchgod==0.7
 websockets==10.1
+
+requests~=2.28.1
+parsel~=1.7.0

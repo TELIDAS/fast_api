@@ -6,7 +6,7 @@ services:
     image: postgres:12
     restart: always
     ports:
-      - "5454:5432"
+      - "5432:5432"
     volumes:
       - ./data-postgres:/var/lib/postgresql/data
     environment:
@@ -14,15 +14,25 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: bjbd672bjhw
 
-  server:
-    build:
-      context: .
-      dockerfile: server.Dockerfile
-    restart: always
-    container_name: fast-api-web
-    ports:
-      - "8000:15400"
-    volumes:
-      - ./fast_app/:/fast_app
-    depends_on:
-      - postgres
+#  server:
+#    build:
+#      context: .
+#      dockerfile: server.Dockerfile
+#    restart: always
+#    container_name: fast-api-web
+#    ports:
+#      - "8000:15400"
+#    volumes:
+#      - ./fast_app/:/fast_app
+#    depends_on:
+#      - postgres
+
+#  redis:
+#    container_name: redis
+#    restart: always
+#    image: redis:latest
+#    command: redis-server --requirepass njdksncj67236
+#    volumes:
+#      - ./redis-data:/data
+#    ports:
+#      - "6379:6379"

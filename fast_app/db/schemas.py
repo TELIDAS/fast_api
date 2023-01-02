@@ -19,7 +19,6 @@ class Post(PostBase):
     created_date: datetime
     owner_id: int
 
-
     class Config:
         orm_mode = True
 
