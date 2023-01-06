@@ -6,18 +6,18 @@ from .routers import post, user, auth
 # models.Base.metadata.create_all(bind=engine)
 app = FastAPI()
 
-try:
-    connection = psycopg2.connect(host='localhost',
-                                  port=5432,
-                                  database='fastapi',
-                                  user='postgres',
-                                  password='postgres',
-                                  cursor_factory=RealDictCursor)
-    cursor = connection.cursor()
-    print('Database connection successful')
-except Exception as error:
-    print("Failed Connection to db")
-    print(f'Error: {error}')
+# try:
+#     connection = psycopg2.connect(host='localhost',
+#                                   port=5432,
+#                                   database='fastapi',
+#                                   user='postgres',
+#                                   password='postgres',
+#                                   cursor_factory=RealDictCursor)
+#     cursor = connection.cursor()
+#     print('Database connection successful')
+# except Exception as error:
+#     print("Failed Connection to db")
+#     print(f'Error: {error}')
 
 
 @app.get("/")

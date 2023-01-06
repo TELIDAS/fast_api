@@ -21,14 +21,14 @@ class AutoRiaScraper:
     CAR_NUMBER = '//span[@class="state-num ua"]/text()'
     VIN_CODE = '//span[@class="vin-code"]//text()'
     ALT_VIN_CODE = "//span[@class='label-vin']//text()"
-    all_pages = []
-    all_auto_url = []
     ALL_AUTO_URL = '//a[@class="address"]/@href'
     ALLOW_STATUS_CODES = [200]
     RETRIES = 5
 
     def __init__(self) -> None:
         self.database = Database()
+        self.all_pages = []
+        self.all_auto_url = []
 
     def get_all_pages(self) -> None:
         for page in range(1, 21):

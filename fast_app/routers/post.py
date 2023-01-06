@@ -3,7 +3,7 @@ from fastapi import Response, status, HTTPException, Depends, APIRouter
 from .. import oath2
 from ..db import schemas, models
 from sqlalchemy.orm import Session
-from fast_app.db.database import get_db
+from fast_app.db.database import Database
 
 router = APIRouter(
     prefix="/posts",
@@ -12,7 +12,7 @@ router = APIRouter(
 
 
 @router.get("/", response_model=List[schemas.Post], )
-async def get_posts(db: Session = Depends(get_db),
+async def get_posts(db: Session = Depends(Database),
                     current_user: int = Depends(oath2.get_current_user)):
     print(str(current_user))
     """ all posts """
@@ -28,7 +28,7 @@ async def get_posts(db: Session = Depends(get_db),
 @router.post("/", status_code=status.HTTP_201_CREATED,
              response_model=schemas.Post)
 async def create_post(post: schemas.PostCreate,
-                      db: Session = Depends(get_db),
+                      db: Session = Depends(Database),
                       current_user: int = Depends(oath2.get_current_user)):
     new_post = models.Post(
         owner_id=current_user.id,
@@ -42,7 +42,7 @@ async def create_post(post: schemas.PostCreate,
 
 @router.get("/{id}", response_model=schemas.Post)
 async def get_post_detail(id: int,
-                          db: Session = Depends(get_db),
+                          db: Session = Depends(Database),
                           current_user: schemas.UserLogin = Depends(oath2.get_current_user)):
     post = db.query(models.Post).filter(models.Post.id == id).first()
     if not post:
@@ -52,7 +52,7 @@ async def get_post_detail(id: int,
 
 
 @router.delete("/{id}")
-async def delete_post(id: int, db: Session = Depends(get_db),
+async def delete_post(id: int, db: Session = Depends(Database),
                       current_user: int = Depends(oath2.get_current_user)):
     post_query = db.query(models.Post).filter(models.Post.id == id)
     post = post_query.first()
@@ -68,7 +68,7 @@ async def delete_post(id: int, db: Session = Depends(get_db),
 
 @router.put("/{id}", response_model=schemas.Post)
 async def update_post(id: int, updated_post: schemas.PostBase,
-                      db: Session = Depends(get_db),
+                      db: Session = Depends(Database),
                       current_user: int = Depends(oath2.get_current_user)):
     post_query = db.query(models.Post).filter(models.Post.id == id)
     post = post_query.first()
