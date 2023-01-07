@@ -55,29 +55,27 @@ async def delete_post(id: int,
                       current_user: int = Depends(oath2.get_current_user)
                       ):
     post = db.get_users_data(id=id)
-    users_post = db.delete_users_data(table=models.Post, id=id)
-    if users_post is None:
+    if post is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail=f"Post with id: {id} does not exist")
     if post.owner_id != current_user.id:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN)
     else:
-        users_post = db.delete_users_data(table=models.Post, id=id)
+        db.delete_users_data(table=models.Post, id=id)
         return Response(status_code=status.HTTP_204_NO_CONTENT)
 
 
 @router.put("/{id}", response_model=schemas.Post)
-async def update_post(id: int, updated_post: schemas.PostBase,
-                      db: Session = Depends(Database),
+async def update_post(id: int,
+                      updated_post: schemas.PostBase,
                       current_user: int = Depends(oath2.get_current_user)):
-    post_query = db.query(models.Post).filter(models.Post.id == id)
-    post = post_query.first()
-    if post is None:
+    post_query = db.get_data(table=models.Post, id=id)
+    if post_query is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail=f"Post with id: {id} does not exist")
-    if post.owner_id != current_user.id:
+    if post_query.owner_id != current_user.id:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN,
                             detail="You are now allowed to do such action")
-    post_query.update(updated_post.dict(), synchronize_session=False)
-    db.commit()
-    return post
+    else:
+        db.update_post(table=models.Post, id=id, query=updated_post.dict())
+    return Response(status_code=status.HTTP_200_OK)

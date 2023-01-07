@@ -1,8 +1,7 @@
 import requests
 from parsel import Selector
-# import db_mongo, db_pg
-from db.models import Auto
-from db.database import Database
+from fast_app.db import models
+from fast_app.db.database import Database
 
 
 class AutoRiaScraper:
@@ -77,7 +76,7 @@ class AutoRiaScraper:
             # db_mongo.log(data=data)
             print(data)
 
-            data = Auto(
+            data = models.Auto(
                 url=link,
                 title=title,
                 usd_price=int(usd_price[:-1].replace(" ", "")),

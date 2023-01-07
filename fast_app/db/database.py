@@ -1,17 +1,14 @@
-from fastapi import Depends
-from fastapi.security import OAuth2PasswordRequestForm
-from sqlalchemy import create_engine, MetaData
+from sqlalchemy import create_engine
 from sqlalchemy.exc import IntegrityError
-from sqlalchemy.orm import Session, sessionmaker
-from sqlalchemy_utils import database_exists, create_database
-from sqlalchemy import delete
+from sqlalchemy.orm import Session
 
 from fast_app.db import models
 from fast_app.db.models import Base
+from ..config import DB_URI
 
 
 class Database:
-    def __init__(self, connection_url: str = "postgresql://postgres:bjbd672bjhw@localhost/fastapi"):
+    def __init__(self, connection_url: str = DB_URI):
         self.engine = create_engine(connection_url)
         self.conn = self.engine.connect()
         Base.metadata.create_all(self.engine)
@@ -30,12 +27,18 @@ class Database:
         return users_data
 
     def delete_users_data(self, table, id):
-        # delete(models.Post).where(models.Post.id == id)
-        self.session.query(models.Post).delete(models.Post.id == id)
+        data = self.session.query(table).get(id)
+        if data is None:
+            return None
+        else:
+            self.session.delete(data)
+            self.commit()
+
+    def update_post(self, table, id: int, query: dict):
+        self.session.query(table).filter(models.Post.id == id).update(query)
         self.commit()
 
     def save_objects(self, objects):
-
         self.session.add(objects)
         self.commit()
 
