@@ -39,8 +39,13 @@ class Database:
         self.commit()
 
     def save_objects(self, objects):
-        self.session.add(objects)
-        self.commit()
+        exists = self.session.query(models.Auto).filter_by(url=objects.url).first() is not None
+        print(exists)
+        if exists:
+            pass
+        else:
+            self.session.add(objects)
+            self.commit()
 
     def commit(self):
         try:
