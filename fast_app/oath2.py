@@ -6,7 +6,7 @@ from datetime import datetime, timedelta
 from fastapi import Depends, status, HTTPException
 from fastapi.security import OAuth2PasswordBearer
 from .db.database import db
-from config import SECRET_KEY, ALGORITHM
+from fast_app.config import SECRET_KEY, ALGORITHM
 
 oath2_scheme = OAuth2PasswordBearer(tokenUrl="login")
 ACCESS_TOKEN_EXPIRE_MINUTES = 60

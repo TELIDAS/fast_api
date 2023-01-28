@@ -14,25 +14,57 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: bjbd672bjhw
 
-#  server:
-#    build:
-#      context: .
-#      dockerfile: server.Dockerfile
-#    restart: always
-#    container_name: fast-api-web
-#    ports:
-#      - "8000:15400"
-#    volumes:
-#      - ./fast_app/:/fast_app
-#    depends_on:
-#      - postgres
+  server:
+    build:
+      context: .
+      dockerfile: server.Dockerfile
+    restart: always
+    container_name: fast-api-server
+    ports:
+      - "8000:15400"
+    volumes:
+      - ./fast_app/:/fast_app
+    depends_on:
+      - postgres
 
-#  redis:
-#    container_name: redis
-#    restart: always
-#    image: redis:latest
-#    command: redis-server --requirepass njdksncj67236
-#    volumes:
-#      - ./redis-data:/data
-#    ports:
-#      - "6379:6379"
+  redis:
+    container_name: redis
+    restart: always
+    image: redis:latest
+    command: redis-server --requirepass njdksncj67236
+    volumes:
+      - ./redis-data:/data
+    ports:
+      - "6379:6379"
+
+
+  celery_worker:
+    container_name: celery_worker
+    build:
+      context: .
+      dockerfile: celery.Dockerfile
+    command: celery -A fast_app.celery.celery_worker.celery worker --loglevel=info
+    volumes:
+      - ./:/app
+    environment:
+      - CELERY_BROKER_URL=${CELERY_BROKER_URL}
+      - CELERY_RESULT_BACKEND=${CELERY_RESULT_BACKEND}
+    depends_on:
+      - server
+      - redis
+
+  flower:
+    container_name: flower
+    build:
+      context: .
+      dockerfile: celery.Dockerfile
+    command: celery -A fast_app.celery.celery_worker.celery flower --port=5555
+    ports:
+      - "5556:5555"
+    environment:
+      - CELERY_BROKER_URL=${CELERY_BROKER_URL}
+      - CELERY_RESULT_BACKEND=${CELERY_RESULT_BACKEND}
+    depends_on:
+      - server
+      - redis
+      - celery_worker

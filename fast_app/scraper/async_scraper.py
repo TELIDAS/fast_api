@@ -54,8 +54,8 @@ class AutoRiaScraper:
                 resp = tasks.append(task)
 
             data_dict_gather = await asyncio.gather(*tasks)
-            # for data in data_dict_gather:
-            #     print(data)
+            for data in data_dict_gather:
+                print(data)
             await client.aclose()
 
     async def parse(self, html_text):
@@ -98,17 +98,17 @@ class AutoRiaScraper:
         }
         print(data_dict)
 
-        # data = models.Auto(
-        #     url=link,
-        #     title=title,
-        #     usd_price=usd_price,
-        #     mile_age=mile_age,
-        #     username=username,
-        #     img_url=img_url,
-        #     img_total_count=img_total_count,
-        #     car_number=car_number,
-        # )
-        # self.database.save_objects(objects=data)
+        data = models.Auto(
+            url=link,
+            title=title,
+            usd_price=usd_price,
+            mile_age=mile_age,
+            username=username,
+            img_url=img_url,
+            img_total_count=img_total_count,
+            car_number=car_number,
+        )
+        self.database.save_objects(objects=data)
 
     async def main(self) -> None:
         await self.get_all_pages()

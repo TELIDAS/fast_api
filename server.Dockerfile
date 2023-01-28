@@ -4,6 +4,8 @@ RUN apt-get update
 
 RUN pip install --upgrade pip
 
+RUN mkdir /app
+
 WORKDIR /app
 
 COPY . /app

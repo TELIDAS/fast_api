@@ -30,7 +30,7 @@ class AutoRiaScraper:
         self.all_auto_url = []
 
     def get_all_pages(self) -> None:
-        for page in range(1, 21):
+        for page in range(1, 2):
             self.all_pages.append(self.START_URL.format(page))
             for item in self.all_pages:
                 self.all_auto_url.extend(

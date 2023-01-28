@@ -3,3 +3,5 @@ from decouple import config
 DB_URI = config("DB_URI")
 SECRET_KEY = config("SECRET_KEY")
 ALGORITHM = config("ALGORITHM")
+CELERY_BROKER_URL = config("CELERY_BROKER_URL")
+CELERY_RESULT_BACKEND = config("CELERY_RESULT_BACKEND")

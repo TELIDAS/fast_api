@@ -1,5 +1,6 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Body
 from .routers import post, user, auth
+from fast_app.celery import celery_worker
 
 app = FastAPI()
 
@@ -12,6 +13,12 @@ async def root():
 @app.get("/hello/{name}")
 async def say_hello(name: str):
     return {"message": f"Hello {name}"}
+
+
+@app.post("/ex")
+def start_scraping():
+    scraping = celery_worker.start_scraper()
+    print(scraping)
 
 
 app.include_router(post.router)
